@@ -1,0 +1,25 @@
+version: '3'
+services:
+  demo-app:
+    build: .
+    volumes:
+      - .dockerenv:/src/.venv
+      - .:/src
+    ports:
+      - 8000:8000
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: cuvedev
+      MYSQL_DATABASE: 'db'
+      TZ: 'Asia/Tokyo'
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+     - 33306:3306
+
+volumes:
+  mysql_data:
